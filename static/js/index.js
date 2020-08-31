@@ -8,8 +8,10 @@
   var $resultContainer = $('#result_container')
   var $copyBtn = $('#copy_btn')
 
-  function showError() {
-      $errorMsg.removeClass('is-invisible')
+  function showError(errorMsg) {
+      $errorMsg
+        .html(errorMsg)
+        .removeClass('is-invisible')
       $urlInput.removeClass('is-primary').addClass('is-danger')
       $shortenBtn
         .attr('disabled', true)
@@ -53,7 +55,7 @@
     }
 
     if (url.match(regex) === null) {
-      showError()
+      showError('The URL is invalid')
       return
     }
 
@@ -70,7 +72,12 @@
     })
       .always(enableInput)
       .fail(function(data) {
-        console.log(data.responseText)
+        if (data.responseText) {
+          showError(data.responseText)
+        } else {
+          showError('Sorry, something went wrong')
+        }
+        enableInput()
       })
   })
 
