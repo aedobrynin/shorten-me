@@ -82,17 +82,16 @@
   })
 
   $copyBtn.on('click', function() {
-    var tempInput = document.createElement("input");
-    tempInput.value = $shortenedPlace.html();
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput);
+    var tempInput = document.createElement('input')
+    tempInput.value = $shortenedPlace.html()
+    document.body.appendChild(tempInput)
+    tempInput.select()
+    document.execCommand('copy')
+    document.body.removeChild(tempInput)
 
     $copyBtn.html('Copied!')
     setTimeout(function() {
       $copyBtn.html('Copy')
     }, 1500)
   })
-
 })()
