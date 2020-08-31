@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, abort, redirect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import bjoern
 from models import db, Url
 from config import generate_hash, is_url, normalize_url
@@ -11,6 +13,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./database.db'
 
 db.init_app(app)
 
+limiter = Limiter(
+    app,
+    key_func=get_remote_address
+)
+
 
 @app.before_first_request
 def before_first_request():
@@ -18,11 +25,13 @@ def before_first_request():
 
 
 @app.route('/')
+@limiter.limit('2/second')
 def index():
     return render_template('index.html')
 
 
 @app.route('/shorten/', methods=['POST'])
+@limiter.limit('1/second')
 def shorten():
     url = request.form.get('url')
     if not url:
@@ -51,6 +60,7 @@ def shorten():
 
 
 @app.route('/<shortened>', methods=['GET'])
+@limiter.limit('1/second')
 def get(shortened: str):
     db_value = Url.query.filter_by(hash=shortened).first()
     if not db_value:
@@ -61,6 +71,11 @@ def get(shortened: str):
     db.session.commit()
 
     return redirect(db_value.forward_to)
+
+
+@app.errorhandler(429)
+def ratelimit_handler(event):
+    return 'Too many requests', 429
 
 
 @app.errorhandler(404)
