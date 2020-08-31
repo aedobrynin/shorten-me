@@ -48,6 +48,8 @@
     e.preventDefault()
 
     $resultContainer.addClass('is-invisible')
+    hideError()
+
     var url = $(this).serializeArray()[0].value
     url = url.replace('!"#$%&\'()*+,-./@:;<=>[\\]^_`{|}~', '').trim()
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
