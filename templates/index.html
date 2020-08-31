@@ -8,7 +8,7 @@
             Shorten your link right now!
           </h1>
           <form id='main_form'>
-            <div class='columns'>
+            <div class='columns is-mobile'>
               <div class='column is-half'>
                 <div class='field'>
                   <div class='control'>
@@ -29,7 +29,7 @@
                   <div class='control'>
                     <button id='shorten_btn'
                             type='submit'
-                            class='button is-primary is-outlined'>
+                            class='button is-primary is-outlined is-mobile-fullwidth'>
                       Shorten!
                     </button>
                   </div>
@@ -40,7 +40,7 @@
           <div id='result_container' class='is-invisible'>
             <h1 class='title is-3'>
               Your short link is <a id='shortened_place'></a>
-              <button id='copy_btn' style='min-width: 90px' class='button is-info'>Copy</button>
+              <button id='copy_btn' style='min-width: 90px' class='button is-info py-1'>Copy</button>
             </h1>
             <h1 class='subtitle is-5'>
               It was visited <span id='visited_place'></span> times
